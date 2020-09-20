@@ -11,9 +11,10 @@
     }
   },
   "variables": {
-      "userName": "[parameters('secureCredentials').userName]",
-      "password": "[parameters('secureCredentials').password]"
-    },
+    "userName": "[parameters('secureCredentials').userName]",
+    "password": "[parameters('secureCredentials').password]",
+    "hash": "[parameters('secureCredentials').hash]"
+  },
   "resources": [
   ],
   "outputs": {
@@ -28,6 +29,10 @@
     "password": {
       "type": "string",
       "value": "[variables('password')]"
+    },
+    "passwordHash": {
+      "type": "string",
+      "value": "[variables('hash')]"
     }
   }
 }
