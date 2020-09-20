@@ -218,7 +218,6 @@ Write-Output ""
 Do
 {
 	[string]$rgpName = Read-Host -Prompt "Please enter a new resource group name to use for this deployment"
-    $rgpName = $rgpName.ToUpper()
     if ($rgpName -in $rgList)
     {
         Write-Output "Resource group $rgpName already exists in this subscription. Please enter a new resource group name."
