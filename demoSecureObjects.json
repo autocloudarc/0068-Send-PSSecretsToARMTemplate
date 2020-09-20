@@ -11,23 +11,23 @@
     }
   },
   "variables": {
-      "userName": "[parameters('secureCredentials').secureCredentials[0]]",
-      "password": "[parameters('secureCredentials').secureCredentials[1]]"
+      "userName": "[parameters('secureCredentials').userName]",
+      "password": "[parameters('secureCredentials').password]"
     },
   "resources": [
   ],
   "outputs": {
-    "name": {
+    "secCreds": {
+      "type": "secureObject",
+      "value": "[parameters('secureCredentials')]"
+    },
+    "userName": {
       "type": "string",
       "value": "[variables('userName')]"
     },
-    "pw": {
+    "password": {
       "type": "string",
       "value": "[variables('password')]"
-    },
-    "secureCreds": {
-      "type": "secureObject",
-      "value": "[parameters('secureCredentials')]"
     }
   }
 }
