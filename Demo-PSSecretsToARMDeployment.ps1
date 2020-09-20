@@ -254,7 +254,7 @@ $paramObj.Add("secureCredentials",$credObj)
 $deployment = 'Test-SecureObject' + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm')
 New-AzResourceGroupDeployment -Name $deployment `
 -ResourceGroupName $rgpName `
--TemplateFile .\testSecureObject.json `
+-TemplateFile $templateDeploymentFile `
 -TemplateParameterObject $paramObj `
 -Force `
 -Verbose `
