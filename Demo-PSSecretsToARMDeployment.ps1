@@ -14,6 +14,9 @@ Ensure that you are running at least PowerShell 5.1 and running this script in t
 .PARAMETER PSModuleRepository
 The module repository used to get required Az submodules, which is 'PSGallery' by default.
 
+.PARAMETER templateDeploymentFile
+The ARM Template file to deploy from this PowerShell script.
+
 .EXAMPLE
 .\Demo-PSSecretsToARMDeployment.ps1 -Verbose
 
@@ -59,7 +62,8 @@ Demonstrates how to assemble and pass secrets securely using the secureObject JS
 [CmdletBinding()]
 param
 (
-    [string]$PSModuleRepository = "PSGallery"
+    [string]$PSModuleRepository = "PSGallery",
+    [string]$templateDeploymentFile = ".\demoSecureObjects.json"
 ) # end param
 
 $adminUserName = "adm.infra.user"
@@ -217,10 +221,12 @@ Do
     $rgpName = $rgpName.ToUpper()
     if ($rgpName -in $rgList)
     {
-        Write-Output "Resource group $rgpName already exists in this subscription. Please enter a new name"
+        Write-Output "Resource group $rgpName already exists in this subscription. Please enter a new resource group name."
     } # end if
 } #end Do
 Until ($rgpName -notin $rgList)
+
+Write-Output "Resource group name specified was: $rgpName"
 
 #region Select Azure Region
 Do
