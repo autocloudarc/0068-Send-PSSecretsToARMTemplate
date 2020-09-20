@@ -1,7 +1,7 @@
 #requires -version 5.1
 #requires -RunAsAdministrator
 
-Using Namespace System.Runtime.InteropServices # # For Azure AD service principals marshal class
+using Namespace System.Net # for TLS1.2 update
 
 <#
 .SYNOPSIS
