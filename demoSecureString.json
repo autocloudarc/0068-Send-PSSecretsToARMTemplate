@@ -2,37 +2,31 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "secureCredentials": {
-      "type": "secureString",
+    "adminUserName": {
+      "type": "string",
       "defaultValue": null,
       "metadata": {
-        "description": "adminUserName and adminPassword values combined in a single object. https://www.danielstocker.net/wrapping-arrays-as-secureobjects-for-arm-deployments/"
+        "description": "Administrative username used for creating VMs."
+      }
+    },
+    "pwSecure": {
+      "type": "securestring",
+      "metadata": {
+        "description": "PowerShell PSCredntial object password that is encrypted."
       }
     }
   },
-  "variables": {
-    "userName": "[parameters('secureCredentials').userName]",
-    "password": "[parameters('secureCredentials').password]",
-    "hash": "[parameters('secureCredentials').hash]"
-  },
+  "variables": {},
   "resources": [
   ],
   "outputs": {
-    "secCreds": {
-      "type": "secureObject",
-      "value": "[parameters('secureCredentials')]"
-    },
-    "userName": {
+    "adminUserName": {
       "type": "string",
-      "value": "[variables('userName')]"
+      "value": "[parameters('adminUserName')]"
     },
-    "password": {
-      "type": "string",
-      "value": "[variables('password')]"
-    },
-    "passwordHash": {
-      "type": "string",
-      "value": "[variables('hash')]"
+    "pwSecure": {
+      "type": "securestring",
+      "value": "[parameters('pwSecure')]"
     }
   }
 }

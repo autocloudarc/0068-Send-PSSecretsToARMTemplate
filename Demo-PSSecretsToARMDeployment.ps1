@@ -477,31 +477,44 @@ switch ($scenario)
 {
     "secureObject"
     {
-        $paramObj = @{}
-        $paramObj.Add("secureCredentials",$credObj)
+        $paramSecObj = @{}
+        $paramSecObj.Add("secureCredentials",$credObj)
+        $deployment = $_ + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm')
+        New-AzResourceGroupDeployment -Name $deployment `
+        -ResourceGroupName $rgpName `
+        -TemplateFile $secObjTemplateFile`
+        -TemplateParameterObject $paramSecObj `
+        -Force `
+        -Verbose `
+        -ErrorVariable ErrorMessages
+        if ($ErrorMessages)
+        {
+            Write-Output '', 'Template deployment returned the following errors:', @(@($ErrorMessages) | ForEach-Object { $_.Exception.Message.TrimEnd("`r`n") })
+        } # end if
     } # end condition
     "secureString"
     {
-        # TASK-ITEM:
+        $paramSecStr = @{}
+        $paramSecStr.Add("adminUserName",$adminUserName)
+        $paramSecStr.Add("pwSecure",$pwSecure)
+        $deployment = $_ + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm')
+        New-AzResourceGroupDeployment -Name $deployment `
+        -ResourceGroupName $rgpName `
+        -TemplateFile $secStrTemplateFile `
+        -TemplateParameterObject $paramSecStr `
+        -Force `
+        -Verbose `
+        -ErrorVariable ErrorMessages
+        if ($ErrorMessages)
+        {
+            Write-Output '', 'Template deployment returned the following errors:', @(@($ErrorMessages) | ForEach-Object { $_.Exception.Message.TrimEnd("`r`n") })
+        } # end if
     } # end condition
     "plainText"
     {
         # TASK-ITEM:
     } # end condition
 } # end switch
-
-$deployment = 'Test-SecureObject' + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm')
-New-AzResourceGroupDeployment -Name $deployment `
--ResourceGroupName $rgpName `
--TemplateFile $secObjTemplateFile`
--TemplateParameterObject $paramObj `
--Force `
--Verbose `
--ErrorVariable ErrorMessages
-if ($ErrorMessages)
-{
-    Write-Output '', 'Template deployment returned the following errors:', @(@($ErrorMessages) | ForEach-Object { $_.Exception.Message.TrimEnd("`r`n") })
-} # end if
 
 #region Terminate
 # Resource group and log files cleanup messages
