@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "secureCredentials": {
+      "type": "secureString",
+      "defaultValue": null,
+      "metadata": {
+        "description": "adminUserName and adminPassword values combined in a single object. https://www.danielstocker.net/wrapping-arrays-as-secureobjects-for-arm-deployments/"
+      }
+    }
+  },
+  "variables": {
+    "userName": "[parameters('secureCredentials').userName]",
+    "password": "[parameters('secureCredentials').password]",
+    "hash": "[parameters('secureCredentials').hash]"
+  },
+  "resources": [
+  ],
+  "outputs": {
+    "secCreds": {
+      "type": "secureObject",
+      "value": "[parameters('secureCredentials')]"
+    },
+    "userName": {
+      "type": "string",
+      "value": "[variables('userName')]"
+    },
+    "password": {
+      "type": "string",
+      "value": "[variables('password')]"
+    },
+    "passwordHash": {
+      "type": "string",
+      "value": "[variables('hash')]"
+    }
+  }
+}

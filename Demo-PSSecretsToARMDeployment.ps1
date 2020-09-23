@@ -14,8 +14,23 @@ Ensure that you are running at least PowerShell 5.1 and running this script in t
 .PARAMETER PSModuleRepository
 The module repository used to get required Az submodules, which is 'PSGallery' by default.
 
-.PARAMETER templateDeploymentFile
-The ARM Template file to deploy from this PowerShell script.
+.PARAMETER demoSecureObject
+Switch to select the secure object scenario.
+
+.PARAMETER secObjTemplateFile
+The ARM Template file to deploy from this PowerShell script for the secure object scenario.
+
+.PARAMETER demoSecureString
+Switch to select the secure string scenario.
+
+.PARAMETER secStrTemplateFile
+The ARM Template file to deploy from this PowerShell script for the secure string scenario.
+
+.PARAMETER demoPlainTextString
+Switch to select the plain-text string scenario.
+
+.PARAMETER plnStrTemplateFile
+The ARM Template file to deploy from this PowerShell script for the plain-text string scenario.
 
 .EXAMPLE
 .\Demo-PSSecretsToARMDeployment.ps1 -Verbose
@@ -64,7 +79,15 @@ Demonstrates how to assemble and pass secrets securely using the secureObject JS
 param
 (
     [string]$PSModuleRepository = "PSGallery",
-    [string]$templateDeploymentFile = ".\demoSecureObjects.json"
+    [Parameter(Mandatory=$true)]
+    [ValidateSet("secureObject","secureString","plainText")]
+    [string]$scenario,
+    [Parameter(ParameterSetName="SecureObject")]
+    [string]$secObjTemplateFile = ".\demoSecureObject.json",
+    [Parameter(ParameterSetName="SecureString")]
+    [string]$secStrTemplateFile = ".\demoSecureString.json",
+    [Parameter(ParameterSetName="PlainText")]
+    [string]$plnStrTemplateFile = ".\demoPlainTextString.json"
 ) # end param
 
 $adminUserName = "adm.infra.user"
@@ -450,13 +473,27 @@ Until ($region -in $regions)
 
 New-AzResourceGroup -Name $rgpName -Location $region -Force -Verbose
 
-$paramObj = @{}
-$paramObj.Add("secureCredentials",$credObj)
+switch ($scenario)
+{
+    "secureObject"
+    {
+        $paramObj = @{}
+        $paramObj.Add("secureCredentials",$credObj)
+    } # end condition
+    "secureString"
+    {
+        # TASK-ITEM:
+    } # end condition
+    "plainText"
+    {
+        # TASK-ITEM:
+    } # end condition
+} # end switch
 
 $deployment = 'Test-SecureObject' + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm')
 New-AzResourceGroupDeployment -Name $deployment `
 -ResourceGroupName $rgpName `
--TemplateFile $templateDeploymentFile `
+-TemplateFile $secObjTemplateFile`
 -TemplateParameterObject $paramObj `
 -Force `
 -Verbose `
