@@ -2,26 +2,28 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "secureCredentials": {
-      "type": "secureString",
+    "adminUserName": {
+      "type": "string",
       "defaultValue": null,
       "metadata": {
-        "description": "adminUserName and adminPassword values combined in a single object. https://www.danielstocker.net/wrapping-arrays-as-secureobjects-for-arm-deployments/"
+        "description": "Administrative user name for VM credentials."
+      }
+    },
+    "adminPassword": {
+      "type": "string",
+      "defaultValue": null,
+      "metadata": {
+        "description": "Clear text password (used for vulnerability demonstration only - not recommended for dev or production)"
       }
     }
   },
   "variables": {
-    "userName": "[parameters('secureCredentials').userName]",
-    "password": "[parameters('secureCredentials').password]",
-    "hash": "[parameters('secureCredentials').hash]"
+    "userName": "[parameters('adminUserName')]",
+    "password": "[parameters('adminPassword')]"
   },
   "resources": [
   ],
   "outputs": {
-    "secCreds": {
-      "type": "secureObject",
-      "value": "[parameters('secureCredentials')]"
-    },
     "userName": {
       "type": "string",
       "value": "[variables('userName')]"
@@ -29,10 +31,6 @@
     "password": {
       "type": "string",
       "value": "[variables('password')]"
-    },
-    "passwordHash": {
-      "type": "string",
-      "value": "[variables('hash')]"
     }
   }
 }
