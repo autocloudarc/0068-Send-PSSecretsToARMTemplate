@@ -330,7 +330,7 @@ switch ($scenario)
 
 #region Terminate
 # Resource group and log files cleanup messages
-$labResourceGroupFilter = "rg??"
+$labResourceGroupFilter = "????????-rgp-01"
 Write-Warning "The list of PoC resource groups are:"
 Get-AzResourceGroup -Name $labResourceGroupFilter -Verbose
 Write-Output ""
