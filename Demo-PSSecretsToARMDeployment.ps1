@@ -206,7 +206,7 @@ Write-Output "Current directory has been changed to script root: $PSScriptRoot" 
 #region Generate credentials
 # https://pscustomobject.github.io/powershell/howto/PowerShell-Create-Credential-Object/
 
-$pwPlainText = New-RandomString -IncludeUpper -IncludeLower -IncludeNumbers
+$pwPlainText = New-ARMDeployRandomPassword
 $pwSecure = ConvertTo-SecureString -String $pwPlainText -AsPlainText -Force
 $adminCred = [PSCredential]::New($adminUserName,$pwSecure)
 
