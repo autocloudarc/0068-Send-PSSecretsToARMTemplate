@@ -255,34 +255,18 @@ $rgList
 
 Write-Output "The list above shows the current resource groups in your subscription: $Subscription"
 Write-Output ""
+
 Do
 {
-	[string]$rgpName = Read-Host -Prompt "Please enter a new resource group name to use for this deployment"
-    if ($rgpName -in $rgList)
-    {
-        Write-Output "Resource group $rgpName already exists in this subscription. Please enter a new resource group name."
-    } # end if
+    $rgpName = (New-ARMDeployRandomString) + "-rgp-01"
+    Write-Output "Adding a new resource group with an automatically generated name of: $rgpName"
 } #end Do
 Until ($rgpName -notin $rgList)
 
-Write-Output "Resource group name specified was: $rgpName"
+Write-Output "The new resource group name is: $rgpName"
 
 #region Select Azure Region
-Do
-{
-    # The location refers to a geographic region of an Az data center
-    $regions = Get-AzLocation | Select-Object -ExpandProperty Location
-    Write-Output "The list of available regions are :"
-    Write-Output ""
-    Write-Output $regions
-    Write-Output ""
-    $enterRegionMessage = "Please enter the geographic location (Azure Data Center Region) for resources, i.e. [eastus2 | westus2]"
-    [string]$Region = Read-Host $enterRegionMessage
-    $region = $region.ToUpper()
-    Write-Output "`$Region selected: $Region "
-    Write-Output ""
-} #end Do
-Until ($region -in $regions)
+$region = "eastus2"
 #endregion
 
 New-AzResourceGroup -Name $rgpName -Location $region -Force -Verbose
