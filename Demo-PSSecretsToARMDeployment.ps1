@@ -296,7 +296,7 @@ switch ($scenario)
         $deployment = $_ + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm')
         New-AzResourceGroupDeployment -Name $deployment `
         -ResourceGroupName $rgpName `
-        -TemplateFile $secObjTemplateFile`
+        -TemplateFile $secObjTemplateFile `
         -TemplateParameterObject $paramSecObj `
         -Force `
         -Verbose `
