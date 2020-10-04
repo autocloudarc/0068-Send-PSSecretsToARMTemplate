@@ -76,11 +76,8 @@ param
     [Parameter(Mandatory=$true)]
     [ValidateSet("secureObject","secureString","plainText")]
     [string]$scenario,
-    [Parameter(ParameterSetName="SecureObject")]
     [string]$secObjTemplateFile = ".\demoSecureObject.json",
-    [Parameter(ParameterSetName="SecureString")]
     [string]$secStrTemplateFile = ".\demoSecureString.json",
-    [Parameter(ParameterSetName="PlainText")]
     [string]$plnStrTemplateFile = ".\demoPlainTextString.json"
 ) # end param
 
