@@ -81,6 +81,8 @@ param
     [string]$plnStrTemplateFile = ".\demoPlainTextString.json"
 ) # end param
 
+$startTime = Get-Date -Verbose
+
 $adminUserName = "adm.infra.user"
 #region TLS1.2
 # Use TLS 1.2 to support Nuget provider
@@ -354,6 +356,15 @@ Write-Warning 'Get-AzResourceGroup -Name <YourResourceGroupName> | ForEach-Objec
 Write-Warning "Transcript logs are hosted in the directory: $LogDirectory to allow access for multiple users on this machine for diagnostic or auditing purposes."
 Write-Warning "To examine, archive or remove old log files to recover storage space, run this command to open the log files location: Start-Process -FilePath $LogDirectory"
 Write-Warning "You may change the value of the `$modulePath variable in this script, currently at: $modulePath to a common file server hosted share if you prefer, i.e. \\<server.domain.com>\<share>\<log-directory>"
+
+#region Show time
+$StopTime = Get-Date -Verbose
+Write-Output "Calculating elapsed time..."
+$ExecutionTime = New-TimeSpan -Start $startTime -End $StopTime
+$Footer = "TOTAL SCRIPT EXECUTION TIME: $ExecutionTime"
+Write-Output ""
+Write-Output $Footer
+#endregion Show time
 
 Stop-Transcript -Verbose
 #endregion Terminate
