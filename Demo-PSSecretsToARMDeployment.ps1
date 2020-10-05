@@ -74,7 +74,7 @@ param
 (
     [string]$PSModuleRepository = "PSGallery",
     [Parameter(Mandatory=$true)]
-    [ValidateSet("secureObject","secureString","plainText")]
+    [ValidateSet("secureString","plainText","secureObject")]
     [string]$scenario,
     [string]$secObjTemplateFile = ".\demoSecureObject.json",
     [string]$secStrTemplateFile = ".\demoSecureString.json",
@@ -277,23 +277,6 @@ New-AzResourceGroup -Name $rgpName -Location $region -Force -Verbose
 
 switch ($scenario)
 {
-    "secureObject"
-    {
-        $paramSecObj = @{}
-        $paramSecObj.Add("secureCredentials",$credObj)
-        $deployment = $_ + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm')
-        New-AzResourceGroupDeployment -Name $deployment `
-        -ResourceGroupName $rgpName `
-        -TemplateFile $secObjTemplateFile `
-        -TemplateParameterObject $paramSecObj `
-        -Force `
-        -Verbose `
-        -ErrorVariable ErrorMessages
-        if ($ErrorMessages)
-        {
-            Write-Output '', 'Template deployment returned the following errors:', @(@($ErrorMessages) | ForEach-Object { $_.Exception.Message.TrimEnd("`r`n") })
-        } # end if
-    } # end condition
     "secureString"
     {
         $paramSecStr = @{}
@@ -322,6 +305,23 @@ switch ($scenario)
         -ResourceGroupName $rgpName `
         -TemplateFile $plnStrTemplateFile `
         -TemplateParameterObject $paramPlnStr `
+        -Force `
+        -Verbose `
+        -ErrorVariable ErrorMessages
+        if ($ErrorMessages)
+        {
+            Write-Output '', 'Template deployment returned the following errors:', @(@($ErrorMessages) | ForEach-Object { $_.Exception.Message.TrimEnd("`r`n") })
+        } # end if
+    } # end condition
+    "secureObject"
+    {
+        $paramSecObj = @{}
+        $paramSecObj.Add("secureCredentials",$credObj)
+        $deployment = $_ + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm')
+        New-AzResourceGroupDeployment -Name $deployment `
+        -ResourceGroupName $rgpName `
+        -TemplateFile $secObjTemplateFile `
+        -TemplateParameterObject $paramSecObj `
         -Force `
         -Verbose `
         -ErrorVariable ErrorMessages

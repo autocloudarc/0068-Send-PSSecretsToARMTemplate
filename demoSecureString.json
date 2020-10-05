@@ -12,7 +12,7 @@
     "pwSecure": {
       "type": "securestring",
       "metadata": {
-        "description": "PowerShell PSCredntial object password that is encrypted."
+        "description": "PowerShell PSCredential object password that is encrypted."
       }
     }
   },
