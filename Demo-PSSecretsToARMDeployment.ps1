@@ -15,7 +15,7 @@ Ensure that you are running at least PowerShell 5.1 and running this script in t
 The module repository used to get required Az submodules, which is 'PSGallery' by default.
 
 .PARAMETER scenario
-Switch to select the secure object scenario.
+Switch to select the scenario. Allowed values are: "secureObject" | "secureString" | "plainText" | "keyVault"
 
 .PARAMETER secObjTemplateFile
 The ARM Template file to deploy from this PowerShell script for the secure object scenario.
@@ -74,15 +74,18 @@ param
 (
     [string]$PSModuleRepository = "PSGallery",
     [Parameter(Mandatory=$true)]
-    [ValidateSet("secureObject","secureString","plainText")]
+    [ValidateSet("secureObject","secureString","plainText","keyVault")]
     [string]$scenario,
     [string]$secObjTemplateFile = ".\demoSecureObject.json",
     [string]$secStrTemplateFile = ".\demoSecureString.json",
-    [string]$plnStrTemplateFile = ".\demoPlainTextString.json"
+    [string]$plnStrTemplateFile = ".\demoPlainTextString.json",
+    [string]$resourceNamePrefix = "poc-",
+    [string]$rgpSuffix = '-rgp-01'
 ) # end param
 
 $startTime = Get-Date -Verbose
 
+# NOTE: If this will be used for a KeyVault secret, the "." characters cannot be included.
 $adminUserName = "adm.infra.user"
 #region TLS1.2
 # Use TLS 1.2 to support Nuget provider
@@ -258,7 +261,8 @@ Write-Output ""
 
 Do
 {
-    $rgpName = (New-ARMDeployRandomString) + "-rgp-01"
+    $randomInfix = New-ARMDeployRandomString
+    $rgpName = $resourcenamePrefix + $randomInfix + $rgpSuffix
     Write-Output "Adding a new resource group with an automatically generated name of: $rgpName"
 } #end Do
 Until ($rgpName -notin $rgList)
@@ -326,11 +330,12 @@ switch ($scenario)
             Write-Output '', 'Template deployment returned the following errors:', @(@($ErrorMessages) | ForEach-Object { $_.Exception.Message.TrimEnd("`r`n") })
         } # end if
     } # end condition
+    default {}
 } # end switch
 
 #region Terminate
 # Resource group and log files cleanup messages
-$labResourceGroupFilter = "????????-rgp-01"
+$labResourceGroupFilter = "poc-????????-rgp-01"
 Write-Warning "The list of PoC resource groups are:"
 Get-AzResourceGroup -Name $labResourceGroupFilter -Verbose
 Write-Output ""
