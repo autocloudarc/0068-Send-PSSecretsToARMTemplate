@@ -74,7 +74,7 @@ param
 (
     [string]$PSModuleRepository = "PSGallery",
     [Parameter(Mandatory=$true)]
-    [ValidateSet("secureObject","secureString","plainText","keyVault")]
+    [ValidateSet("secureObject","secureString","plainText")]
     [string]$scenario,
     [string]$secObjTemplateFile = ".\demoSecureObject.json",
     [string]$secStrTemplateFile = ".\demoSecureString.json",
